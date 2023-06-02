@@ -2,7 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Clothes } from './clothes.schema';
 import { Model } from 'mongoose';
 import { CreateClothesDto } from './dto/create.request.dto';
-import { HttpException, Logger } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 
 export class ClothesRepository {
   constructor(
@@ -28,10 +28,9 @@ export class ClothesRepository {
         ...data,
         imgUrl: filePath,
       });
-      console.log(newClothes);
+
       return newClothes;
     } catch (error) {
-      Logger.error(error);
       throw new HttpException(error, 500);
     }
   }

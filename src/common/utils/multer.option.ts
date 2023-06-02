@@ -9,7 +9,6 @@ export const multerOptions = {
    * @param: request Request 객체
    * @param: file 파일 정보
    */
-
   fileFilter: (req, file, cb) => {
     if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
       cb(null, true);
@@ -24,7 +23,7 @@ export const multerOptions = {
   },
 
   storage: diskStorage({
-    destination: './images/clothes',
+    destination: './images',
     filename: (req, file, cb) => {
       const ext = file.originalname.split('.').pop();
       const filename = `${file.originalname.replace(

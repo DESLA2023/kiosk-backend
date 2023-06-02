@@ -12,6 +12,7 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { ClothesModule } from './clothes/clothes.module';
 import { APP_PIPE } from '@nestjs/core';
 import { MulterModule } from '@nestjs/platform-express';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MulterModule } from '@nestjs/platform-express';
     MulterModule.register({
       dest: './images',
     }),
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [
