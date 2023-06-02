@@ -1,11 +1,11 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumberString, IsString } from 'class-validator';
-import mongoose, { Document } from 'mongoose';
+import { Document } from 'mongoose';
 
 @Schema()
 export class Clothes extends Document {
-  public id: mongoose.Types.ObjectId;
+  public _id: string;
 
   @ApiProperty({
     example: '나이키 티셔츠',

@@ -2,7 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Clothes } from './clothes.schema';
 import { Model } from 'mongoose';
 import { CreateClothesDto } from './dto/create.request.dto';
-import { HttpException } from '@nestjs/common';
+import { HttpException, Logger } from '@nestjs/common';
 
 export class ClothesRepository {
   constructor(
@@ -31,6 +31,17 @@ export class ClothesRepository {
 
       return newClothes;
     } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, 500);
+    }
+  }
+
+  async delete(id: string) {
+    try {
+      await this.clothesModel.findByIdAndDelete(id).exec();
+      return 'delete success';
+    } catch (error) {
+      Logger.error(error);
       throw new HttpException(error, 500);
     }
   }

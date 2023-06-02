@@ -67,6 +67,6 @@ export class ClothesController {
   @ApiTags('옷')
   @Delete('/:id')
   async deleteClothes(@Param('id') id: string) {
-    return `Delete clothes ${id}`;
+    return this.clothesService.deleteClothes(id);
   }
 }

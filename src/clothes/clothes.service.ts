@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateClothesDto } from './dto/create.request.dto';
 import { ClothesRepository } from './clothes.repository';
+import fs from 'fs';
 
 @Injectable()
 export class ClothesService {
@@ -25,6 +26,14 @@ export class ClothesService {
   }
 
   async deleteClothes(id: string) {
-    return `Delete clothes ${id}`;
+    const target = await this.clothesRepository.findById(id);
+    if (!target) throw new BadRequestException('해당하는 옷이 없습니다.');
+    try {
+      fs.unlinkSync(`./${target.imgUrl}`);
+    } catch (error) {
+      console.log(error);
+    }
+
+    return await this.clothesRepository.delete(id);
   }
 }
