@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateClothesDto } from './dto/create.request.dto';
 
 @Injectable()
@@ -15,8 +15,10 @@ export class ClothesService {
     return `Clothes ${category}`;
   }
 
-  async createClothes(data: CreateClothesDto) {
-    return data;
+  async createClothes(data: CreateClothesDto, file: Express.Multer.File) {
+    if (!file) throw new BadRequestException('파일이 없습니다.');
+
+    return { ...data, filePath: file.path };
   }
 
   async deleteClothes(id: string) {

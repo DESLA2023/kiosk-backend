@@ -1,7 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ClothesService } from './clothes.service';
 import { CreateClothesDto } from './dto/create.request.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('clothes')
 export class ClothesController {
@@ -39,8 +50,26 @@ export class ClothesController {
   @ApiOperation({ summary: '옷 등록' })
   @ApiTags('옷')
   @Post()
-  async createClothes(@Body() data: CreateClothesDto) {
-    return this.clothesService.createClothes(data);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './images',
+        filename: (req, file, cb) => {
+          const ext = file.originalname.split('.').pop();
+          const filename = `${file.originalname.replace(
+            `.${ext}`,
+            '',
+          )}_${Date.now()}.${ext}`;
+          cb(null, filename);
+        },
+      }),
+    }),
+  )
+  async createClothes(
+    @Body() data: CreateClothesDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.clothesService.createClothes(data, file);
   }
 
   @ApiResponse({ status: 500, description: '서버 에러' })

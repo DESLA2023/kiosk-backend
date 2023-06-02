@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumberString, IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
 export class Clothes extends Document {
@@ -16,7 +16,7 @@ export class Clothes extends Document {
     description: '가격',
     required: true,
   })
-  @IsNumber()
+  @IsNumberString()
   public price: number;
 
   @ApiProperty({
@@ -56,7 +56,7 @@ export class Clothes extends Document {
     description: '재고',
     required: true,
   })
-  @IsNumber()
+  @IsNumberString()
   public stock: number;
 
   @ApiProperty({
