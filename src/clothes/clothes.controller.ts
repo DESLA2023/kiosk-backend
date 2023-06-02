@@ -6,14 +6,17 @@ import {
   Param,
   Post,
   UploadedFile,
+  UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ClothesService } from './clothes.service';
 import { CreateClothesDto } from './dto/create.request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { multerOptions } from 'src/common/utils/multer.option';
+import { HttpExceptionFilter } from 'src/common/execeptions/http-exception.filter';
 
+@UseFilters(HttpExceptionFilter)
 @Controller('clothes')
 export class ClothesController {
   constructor(private readonly clothesService: ClothesService) {}
@@ -50,21 +53,7 @@ export class ClothesController {
   @ApiOperation({ summary: '옷 등록' })
   @ApiTags('옷')
   @Post()
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './images',
-        filename: (req, file, cb) => {
-          const ext = file.originalname.split('.').pop();
-          const filename = `${file.originalname.replace(
-            `.${ext}`,
-            '',
-          )}_${Date.now()}.${ext}`;
-          cb(null, filename);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('image', multerOptions))
   async createClothes(
     @Body() data: CreateClothesDto,
     @UploadedFile() file: Express.Multer.File,

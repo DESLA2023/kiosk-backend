@@ -1,14 +1,19 @@
+import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumberString, IsString } from 'class-validator';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
+@Schema()
 export class Clothes extends Document {
+  public id: mongoose.Types.ObjectId;
+
   @ApiProperty({
     example: '나이키 티셔츠',
     description: '상품명',
     required: true,
   })
   @IsString()
+  @Prop()
   public name: string;
 
   @ApiProperty({
@@ -17,6 +22,7 @@ export class Clothes extends Document {
     required: true,
   })
   @IsNumberString()
+  @Prop()
   public price: number;
 
   @ApiProperty({
@@ -25,6 +31,7 @@ export class Clothes extends Document {
     required: true,
   })
   @IsString()
+  @Prop()
   public brand: string;
 
   @ApiProperty({
@@ -33,6 +40,7 @@ export class Clothes extends Document {
     required: true,
   })
   @IsString()
+  @Prop()
   public category: string;
 
   @ApiProperty({
@@ -41,6 +49,7 @@ export class Clothes extends Document {
     required: true,
   })
   @IsString()
+  @Prop()
   public color: string;
 
   @ApiProperty({
@@ -49,6 +58,7 @@ export class Clothes extends Document {
     required: true,
   })
   @IsString()
+  @Prop()
   public size: string;
 
   @ApiProperty({
@@ -57,6 +67,7 @@ export class Clothes extends Document {
     required: true,
   })
   @IsNumberString()
+  @Prop()
   public stock: number;
 
   @ApiProperty({
@@ -66,5 +77,8 @@ export class Clothes extends Document {
     required: true,
   })
   @IsString()
-  public img: string;
+  @Prop()
+  public imgUrl: string;
 }
+
+export const ClothesSchema = SchemaFactory.createForClass(Clothes);
